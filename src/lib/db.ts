@@ -1,4 +1,4 @@
-import { asc } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { memoryEntries } from "./schema";
 
@@ -25,7 +25,9 @@ async function getDb() {
   return cachedDb;
 }
 
-export async function getMemoryEntries(): Promise<MemoryEntry[]> {
+export async function getMemoryEntries(
+  ownerId: string,
+): Promise<MemoryEntry[]> {
   if (!process.env.DATABASE_URL) {
     return [];
   }
@@ -39,6 +41,7 @@ export async function getMemoryEntries(): Promise<MemoryEntry[]> {
     const rows = await db
       .select()
       .from(memoryEntries)
+      .where(eq(memoryEntries.ownerId, ownerId))
       .orderBy(asc(memoryEntries.date));
     return rows.map((row) => ({
       ...row,
@@ -51,6 +54,7 @@ export async function getMemoryEntries(): Promise<MemoryEntry[]> {
 }
 
 export async function addMemoryEntry(input: {
+  ownerId: string;
   date: string;
   description: string;
   category?: string;
@@ -77,6 +81,7 @@ export async function addMemoryEntry(input: {
   const rows = await db
     .insert(memoryEntries)
     .values({
+      ownerId: input.ownerId,
       date: input.date,
       description: input.description.trim(),
       category: normalizedCategory,

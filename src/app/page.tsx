@@ -1,16 +1,22 @@
 import { EntryForm } from "@/components/entry-form";
+import { SignOutButton } from "@/components/sign-out-button";
 import { Timeline } from "@/components/timeline";
+import { requireUser } from "@/lib/auth";
 import { getMemoryEntries } from "@/lib/db";
 
 export default async function Home() {
-  const entries = await getMemoryEntries();
+  const user = await requireUser();
+  const entries = await getMemoryEntries(user.id);
 
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8">
       <header className="rounded border border-stone-300 bg-stone-50 p-6 shadow-[2px_2px_0_0_rgba(0,0,0,0.08)]">
-        <p className="text-sm uppercase tracking-[0.4em] text-stone-500">
-          MemoryLine
-        </p>
+        <div className="flex items-start justify-between gap-4">
+          <p className="text-sm uppercase tracking-[0.4em] text-stone-500">
+            MemoryLine
+          </p>
+          <SignOutButton />
+        </div>
         <h1 className="mt-2 text-3xl font-semibold tracking-tight text-stone-900 sm:text-4xl">
           Keep the dates that matter close at hand.
         </h1>
