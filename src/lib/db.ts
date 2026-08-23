@@ -1,9 +1,11 @@
-import { asc, eq } from "drizzle-orm";
+import { and, asc, eq, exists, inArray, or } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/node-postgres";
-import { memoryEntries } from "./schema";
+import { eventShares, memoryEntries } from "./schema";
 
 export type MemoryEntry = {
   id: number;
+  ownerId: string | null;
+  sharedWith: string[];
   date: string;
   description: string;
   category: string | null;
@@ -27,6 +29,7 @@ async function getDb() {
 
 export async function getMemoryEntries(
   ownerId: string,
+  email: string,
 ): Promise<MemoryEntry[]> {
   if (!process.env.DATABASE_URL) {
     return [];
@@ -41,10 +44,42 @@ export async function getMemoryEntries(
     const rows = await db
       .select()
       .from(memoryEntries)
-      .where(eq(memoryEntries.ownerId, ownerId))
+      .where(
+        or(
+          eq(memoryEntries.ownerId, ownerId),
+          exists(
+            db
+              .select({ id: eventShares.id })
+              .from(eventShares)
+              .where(
+                and(
+                  eq(eventShares.entryId, memoryEntries.id),
+                  eq(eventShares.recipientEmail, email.toLowerCase()),
+                ),
+              ),
+          ),
+        ),
+      )
       .orderBy(asc(memoryEntries.date));
+    const entryIds = rows.map((row) => row.id);
+    const shares = entryIds.length
+      ? await db
+          .select({
+            entryId: eventShares.entryId,
+            recipientEmail: eventShares.recipientEmail,
+          })
+          .from(eventShares)
+          .where(inArray(eventShares.entryId, entryIds))
+      : [];
+    const recipientsByEntry = new Map<number, string[]>();
+    for (const share of shares) {
+      const recipients = recipientsByEntry.get(share.entryId) ?? [];
+      recipients.push(share.recipientEmail);
+      recipientsByEntry.set(share.entryId, recipients);
+    }
     return rows.map((row) => ({
       ...row,
+      sharedWith: recipientsByEntry.get(row.id) ?? [],
       createdAt: row.createdAt ? new Date(row.createdAt) : null,
     }));
   } catch (err) {
@@ -64,6 +99,8 @@ export async function addMemoryEntry(input: {
   if (!process.env.DATABASE_URL) {
     const entry: MemoryEntry = {
       id: Date.now(),
+      ownerId: input.ownerId,
+      sharedWith: [],
       date: input.date,
       description: input.description.trim(),
       category: normalizedCategory,
@@ -88,5 +125,40 @@ export async function addMemoryEntry(input: {
     })
     .returning();
 
+  return rows[0] ?? null;
+}
+
+export async function shareMemoryEntry(input: {
+  entryId: number;
+  ownerId: string;
+  recipientEmail: string;
+}) {
+  const db = await getDb();
+  if (!db) return null;
+
+  const recipientEmail = input.recipientEmail.trim().toLowerCase();
+  if (!recipientEmail) return null;
+
+  const ownedEntry = await db
+    .select({ id: memoryEntries.id })
+    .from(memoryEntries)
+    .where(
+      and(
+        eq(memoryEntries.id, input.entryId),
+        eq(memoryEntries.ownerId, input.ownerId),
+      ),
+    )
+    .limit(1);
+  if (!ownedEntry.length) return null;
+
+  const rows = await db
+    .insert(eventShares)
+    .values({
+      entryId: input.entryId,
+      ownerId: input.ownerId,
+      recipientEmail,
+    })
+    .onConflictDoNothing()
+    .returning();
   return rows[0] ?? null;
 }

@@ -46,13 +46,23 @@ export function EntryForm() {
             defaultValue=""
             className="w-full rounded border border-stone-300 bg-white px-3 py-2 text-sm outline-none focus:border-stone-700"
           >
-            <option value="">Choose one</option>
+            <option value="">Uncategorized</option>
             {categories.map((category) => (
               <option key={category} value={category}>
                 {category}
               </option>
             ))}
           </select>
+        </label>
+
+        <label className="block text-sm text-stone-700">
+          <span className="mb-1 block">Share with</span>
+          <input
+            name="recipientEmail"
+            type="email"
+            placeholder="name@example.com (optional)"
+            className="w-full rounded border border-stone-300 bg-white px-3 py-2 text-sm outline-none focus:border-stone-700"
+          />
         </label>
 
         <button

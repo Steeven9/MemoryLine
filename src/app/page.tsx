@@ -6,7 +6,7 @@ import { getMemoryEntries } from "@/lib/db";
 
 export default async function Home() {
   const user = await requireUser();
-  const entries = await getMemoryEntries(user.id);
+  const entries = await getMemoryEntries(user.id, user.email ?? "");
 
   return (
     <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8">

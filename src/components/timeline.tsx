@@ -78,9 +78,35 @@ export function Timeline({ entries }: Readonly<{ entries: MemoryEntry[] }>) {
               <span className="absolute left-[-1.35rem] top-3 h-3 w-3 rounded-full border border-stone-700 bg-stone-100" />
               <article className="rounded border border-stone-300 bg-white p-3">
                 <div className="flex flex-wrap items-center justify-between gap-2">
-                  <p className="text-sm font-semibold text-stone-800">
-                    {formatDate(entry.date)}
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm font-semibold text-stone-800">
+                      {formatDate(entry.date)}
+                    </p>
+                    {entry.sharedWith.length > 0 && (
+                      <span
+                        className="group relative inline-flex text-stone-500"
+                        title={`Shared with ${entry.sharedWith.join(", ")}`}
+                        aria-label={`Shared with ${entry.sharedWith.join(", ")}`}
+                      >
+                        <svg
+                          aria-hidden="true"
+                          className="h-4 w-4"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="1.8"
+                        >
+                          <circle cx="9" cy="8" r="3" />
+                          <path d="M3.5 20c.5-3.2 2.3-5 5.5-5s5 1.8 5.5 5" />
+                          <path d="M16 11a3 3 0 1 0 0-6" />
+                          <path d="M17 15c2.1.3 3.3 1.9 3.5 5" />
+                        </svg>
+                        <span className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 hidden -translate-x-1/2 whitespace-nowrap rounded bg-stone-900 px-2 py-1 text-xs font-normal normal-case tracking-normal text-stone-50 shadow group-hover:block">
+                          Shared with {entry.sharedWith.join(", ")}
+                        </span>
+                      </span>
+                    )}
+                  </div>
                   <span className="text-xs uppercase tracking-[0.25em] text-stone-500">
                     {entry.category ?? "Uncategorized"}
                   </span>
