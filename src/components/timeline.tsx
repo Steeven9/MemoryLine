@@ -3,12 +3,14 @@
 import { DeleteEntryButton } from "@/components/delete-entry-button";
 import type { MemoryEntry } from "@/lib/db";
 import { formatDate } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 
 export function Timeline({
   entries,
   userId,
 }: Readonly<{ entries: MemoryEntry[]; userId: string }>) {
+  const t = useTranslations("timeline");
   const [activeCategory, setActiveCategory] = useState("all");
   const timelineRef = useRef<HTMLOListElement>(null);
   const categories = Array.from(
@@ -34,7 +36,7 @@ export function Timeline({
   if (!entries.length) {
     return (
       <div className="rounded mb-6 border border-stone-300 bg-stone-50 p-6 text-sm leading-6 text-stone-600 shadow-[2px_2px_0_0_rgba(0,0,0,0.08)]">
-        No notes yet. Add the first important date to begin the timeline.
+        {t("empty")}
       </div>
     );
   }
@@ -44,16 +46,16 @@ export function Timeline({
       <div className="mb-4 flex items-end justify-between gap-3">
         <div>
           <h2 className="text-lg font-semibold tracking-wide text-stone-800">
-            Timeline
+            {t("title")}
           </h2>
         </div>
         <span className="rounded border border-stone-300 bg-white px-2 py-1 text-stone-500">
-          {filteredEntries.length} entries
+          {t("entries", { count: filteredEntries.length })}
         </span>
       </div>
 
       <fieldset className="mb-5 flex flex-wrap gap-2">
-        <legend className="sr-only">Filter timeline by category</legend>
+        <legend className="sr-only">{t("title")}</legend>
         <button
           type="button"
           aria-pressed={activeCategory === "all"}
@@ -64,7 +66,7 @@ export function Timeline({
               : "border-stone-300 bg-white text-stone-600 hover:border-stone-600 hover:text-stone-900"
           }`}
         >
-          All
+          {t("all")}
         </button>
         {categories.map((category) => (
           <button
@@ -78,7 +80,7 @@ export function Timeline({
                 : "border-stone-300 bg-white text-stone-600 hover:border-stone-600 hover:text-stone-900"
             }`}
           >
-            {category}
+            {category === "Uncategorized" ? t("uncategorized") : category}
           </button>
         ))}
       </fieldset>
@@ -88,7 +90,7 @@ export function Timeline({
           <div className="mb-3 flex justify-end gap-2">
             <button
               type="button"
-              aria-label="Show previous timeline entries"
+              aria-label={t("previous")}
               onClick={() => scrollTimeline("previous")}
               className="rounded border border-stone-300 bg-white p-2 text-stone-600 transition-colors hover:border-stone-600 hover:text-stone-900"
             >
@@ -105,7 +107,7 @@ export function Timeline({
             </button>
             <button
               type="button"
-              aria-label="Show next timeline entries"
+              aria-label={t("next")}
               onClick={() => scrollTimeline("next")}
               className="rounded border border-stone-300 bg-white p-2 text-stone-600 transition-colors hover:border-stone-600 hover:text-stone-900"
             >
@@ -123,7 +125,7 @@ export function Timeline({
           </div>
           <ol
             ref={timelineRef}
-            aria-label="Memory entries"
+            aria-label={t("memoryEntries")}
             className="min-w-0 max-w-full flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth border-y border-stone-300 px-1 pb-5 [scrollbar-color:#a8a29e_transparent]"
           >
             {filteredEntries.map((entry) => (
@@ -133,7 +135,7 @@ export function Timeline({
               >
                 <span className="absolute left-5 top-0 h-3 w-3 rounded-full border border-stone-700 bg-stone-100" />
                 <article
-                  aria-label={entry.spoiler ? "Spoiler event" : undefined}
+                  aria-label={entry.spoiler ? t("spoiler") : undefined}
                   className={`group flex min-h-44 flex-col rounded border border-stone-300 bg-white p-3 transition-[filter] duration-200 ${
                     entry.spoiler ? "blur-sm hover:blur-none" : ""
                   }`}
@@ -146,8 +148,12 @@ export function Timeline({
                       {entry.sharedWith.length > 0 && (
                         <span
                           className="group relative inline-flex text-stone-500"
-                          title={`Shared with ${entry.sharedWith.join(", ")}`}
-                          aria-label={`Shared with ${entry.sharedWith.join(", ")}`}
+                          title={t("sharedWith", {
+                            people: entry.sharedWith.join(", "),
+                          })}
+                          aria-label={t("sharedWith", {
+                            people: entry.sharedWith.join(", "),
+                          })}
                         >
                           <svg
                             aria-hidden="true"
@@ -163,14 +169,16 @@ export function Timeline({
                             <path d="M17 15c2.1.3 3.3 1.9 3.5 5" />
                           </svg>
                           <span className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 hidden -translate-x-1/2 whitespace-nowrap rounded bg-stone-900 px-2 py-1 text-xs font-normal normal-case tracking-normal text-stone-50 shadow group-hover:block">
-                            Shared with {entry.sharedWith.join(", ")}
+                            {t("sharedWith", {
+                              people: entry.sharedWith.join(", "),
+                            })}
                           </span>
                         </span>
                       )}
                     </div>
                     <div className="flex items-center gap-3">
                       <span className="text-xs text-stone-500">
-                        {entry.category ?? "Uncategorized"}
+                        {entry.category ?? t("uncategorized")}
                       </span>
                       {entry.ownerId === userId && (
                         <DeleteEntryButton entryId={entry.id} />
@@ -187,7 +195,7 @@ export function Timeline({
         </div>
       ) : (
         <p className="rounded border border-dashed border-stone-300 bg-white p-4 text-sm text-stone-600">
-          No notes in this category.
+          {t("emptyCategory")}
         </p>
       )}
     </div>

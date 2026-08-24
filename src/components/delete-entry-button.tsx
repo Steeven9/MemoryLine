@@ -1,13 +1,15 @@
 "use client";
 
-import { deleteMemoryEntry } from "@/app/actions";
+import { deleteMemoryEntry } from "@/app/actions/db";
+import { useTranslations } from "next-intl";
 
 export function DeleteEntryButton({ entryId }: Readonly<{ entryId: number }>) {
+  const t = useTranslations("actions");
   return (
     <form
       action={deleteMemoryEntry}
       onSubmit={(event) => {
-        if (!window.confirm("Delete this event permanently?")) {
+        if (!window.confirm(t("deleteConfirm"))) {
           event.preventDefault();
         }
       }}
@@ -15,8 +17,8 @@ export function DeleteEntryButton({ entryId }: Readonly<{ entryId: number }>) {
       <input type="hidden" name="entryId" value={entryId} />
       <button
         type="submit"
-        aria-label="Delete event"
-        title="Delete event"
+        aria-label={t("delete")}
+        title={t("delete")}
         className="text-red-600 transition-colors hover:text-red-800"
       >
         <svg

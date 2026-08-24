@@ -1,0 +1,48 @@
+{
+  "home": {
+    "description": "Un modo semplice per tenere traccia delle date importanti."
+  },
+  "form": {
+    "title": "Aggiungi una data",
+    "intro": "Registra il giorno, descrivi perché è importante e aggiungi una categoria se vuoi.",
+    "sharedIntro": "Le note condivise con qualcuno appariranno anche nella loro cronologia.",
+    "date": "Data*",
+    "description": "Descrizione*",
+    "category": "Categoria",
+    "uncategorized": "Senza categoria",
+    "shareWith": "Condividi con",
+    "optionalEmail": "nome@esempio.com (facoltativo)",
+    "markSpoiler": "Segna come spoiler",
+    "save": "Salva nota",
+    "categories": {
+      "Family": "Famiglia",
+      "Work": "Lavoro",
+      "Personal": "Personale",
+      "Travel": "Viaggi",
+      "Other": "Altro"
+    }
+  },
+  "timeline": {
+    "title": "Cronologia",
+    "entries": "{count, plural, =1 {1 evento} other {# eventi}}",
+    "all": "Tutti",
+    "uncategorized": "Senza categoria",
+    "previous": "Mostra gli eventi precedenti",
+    "next": "Mostra gli eventi successivi",
+    "memoryEntries": "Eventi della cronologia",
+    "sharedWith": "Condiviso con {people}",
+    "spoiler": "Evento spoiler",
+    "empty": "Nessuna nota. Aggiungi la prima data importante per iniziare la cronologia.",
+    "emptyCategory": "Nessuna nota in questa categoria."
+  },
+  "actions": {
+    "signOut": "Disconnetti",
+    "delete": "Elimina evento",
+    "deleteConfirm": "Eliminare definitivamente questo evento?"
+  },
+  "language": {
+    "label": "Lingua",
+    "english": "English",
+    "italian": "Italiano"
+  }
+}

@@ -7,7 +7,7 @@ export default function NotFoundPage() {
       <p className="mb-8">
         Not sure what you&apos;re looking for, but it&apos;s not here.
       </p>
-      <Link href="/" />
+      <Link href="/">Go back home</Link>
     </div>
   );
 }

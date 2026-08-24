@@ -1,8 +1,10 @@
-import { addMemoryEntry } from "@/app/actions";
+import { addMemoryEntry } from "@/app/actions/db";
+import { getTranslations } from "next-intl/server";
 
-const categories = ["Family", "Work", "Personal", "Travel", "Other"];
+const categories = ["Family", "Work", "Personal", "Travel", "Other"] as const;
 
-export function EntryForm() {
+export async function EntryForm() {
+  const t = await getTranslations("form");
   return (
     <form
       action={addMemoryEntry}
@@ -10,19 +12,18 @@ export function EntryForm() {
     >
       <div className="mb-4">
         <h2 className="text-lg font-semibold tracking-wide text-stone-800">
-          Add a date
+          {t("title")}
         </h2>
         <p className="mt-1 text-sm leading-6 text-stone-600">
-          Record the day, describe why it matters, and add a category if you
-          want.
+          {t("intro")}
           <br />
-          Notes shared with someone will also appear in their timeline.
+          {t("sharedIntro")}
         </p>
       </div>
 
       <div className="space-y-3">
         <label className="block text-sm text-stone-700">
-          <span className="mb-1 block">Date*</span>
+          <span className="mb-1 block">{t("date")}</span>
           <input
             name="date"
             type="date"
@@ -32,7 +33,7 @@ export function EntryForm() {
         </label>
 
         <label className="block text-sm text-stone-700">
-          <span className="mb-1 block">Description*</span>
+          <span className="mb-1 block">{t("description")}</span>
           <textarea
             name="description"
             rows={4}
@@ -42,27 +43,27 @@ export function EntryForm() {
         </label>
 
         <label className="block text-sm text-stone-700">
-          <span className="mb-1 block">Category</span>
+          <span className="mb-1 block">{t("category")}</span>
           <select
             name="category"
             defaultValue=""
             className="w-full rounded border border-stone-300 bg-white px-3 py-2 text-sm outline-none focus:border-stone-700"
           >
-            <option value="">Uncategorized</option>
+            <option value="">{t("uncategorized")}</option>
             {categories.map((category) => (
               <option key={category} value={category}>
-                {category}
+                {t(`categories.${category}`)}
               </option>
             ))}
           </select>
         </label>
 
         <label className="block text-sm text-stone-700">
-          <span className="mb-1 block">Share with</span>
+          <span className="mb-1 block">{t("shareWith")}</span>
           <input
             name="recipientEmail"
             type="email"
-            placeholder="name@example.com (optional)"
+            placeholder={t("optionalEmail")}
             className="w-full rounded border border-stone-300 bg-white px-3 py-2 text-sm outline-none focus:border-stone-700"
           />
         </label>
@@ -73,14 +74,14 @@ export function EntryForm() {
             type="checkbox"
             className="h-4 w-4 rounded border-stone-300 accent-stone-900"
           />
-          <span>Mark as spoiler</span>
+          <span>{t("markSpoiler")}</span>
         </label>
 
         <button
           type="submit"
           className="w-full rounded border border-stone-800 bg-stone-900 px-3 py-2 text-sm font-medium text-stone-50 transition-colors hover:bg-stone-700"
         >
-          Save note
+          {t("save")}
         </button>
       </div>
     </form>

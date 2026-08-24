@@ -1,4 +1,7 @@
+import { LanguageSwitcher } from "@/components/language-switcher";
 import type { Metadata } from "next";
+import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages, getTranslations } from "next-intl/server";
 import { Bodoni_Moda } from "next/font/google";
 import "./globals.css";
 
@@ -32,14 +35,30 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const locale = await getLocale();
+  const messages = await getMessages();
+  const t = await getTranslations("language");
+
   return (
-    <html lang="en" className={`${font.variable} h-full`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang={locale} className={`${font.variable} h-full`}>
+      <body className="min-h-full flex flex-col">
+        <NextIntlClientProvider messages={messages}>
+          <div className="flex justify-end px-4 pt-4 sm:px-6 lg:px-8">
+            <LanguageSwitcher
+              locale={locale}
+              label={t("label")}
+              english={t("english")}
+              italian={t("italian")}
+            />
+          </div>
+          {children}
+        </NextIntlClientProvider>
+      </body>
     </html>
   );
 }

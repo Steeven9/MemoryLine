@@ -1,0 +1,48 @@
+{
+  "home": {
+    "description": "A simple way of keeping track of the dates that matter."
+  },
+  "form": {
+    "title": "Add a date",
+    "intro": "Record the day, describe why it matters, and add a category if you want.",
+    "sharedIntro": "Notes shared with someone will also appear in their timeline.",
+    "date": "Date*",
+    "description": "Description*",
+    "category": "Category",
+    "uncategorized": "Uncategorized",
+    "shareWith": "Share with",
+    "optionalEmail": "name@example.com (optional)",
+    "markSpoiler": "Mark as spoiler",
+    "save": "Save note",
+    "categories": {
+      "Family": "Family",
+      "Work": "Work",
+      "Personal": "Personal",
+      "Travel": "Travel",
+      "Other": "Other"
+    }
+  },
+  "timeline": {
+    "title": "Timeline",
+    "entries": "{count, plural, =1 {1 entry} other {# entries}}",
+    "all": "All",
+    "uncategorized": "Uncategorized",
+    "previous": "Show previous timeline entries",
+    "next": "Show next timeline entries",
+    "memoryEntries": "Memory entries",
+    "sharedWith": "Shared with {people}",
+    "spoiler": "Spoiler event",
+    "empty": "No notes yet. Add the first important date to begin the timeline.",
+    "emptyCategory": "No notes in this category."
+  },
+  "actions": {
+    "signOut": "Sign out",
+    "delete": "Delete event",
+    "deleteConfirm": "Delete this event permanently?"
+  },
+  "language": {
+    "label": "Language",
+    "english": "English",
+    "italian": "Italiano"
+  }
+}
