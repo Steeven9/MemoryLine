@@ -4,7 +4,7 @@ import { routing } from "./routing";
 
 export default getRequestConfig(async () => {
   const store = await cookies();
-  const locale = store.get("locale")?.value || routing.defaultLocale;
+  const locale = store.get("memoryLine_locale")?.value || routing.defaultLocale;
 
   return {
     locale,
