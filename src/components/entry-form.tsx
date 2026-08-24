@@ -20,7 +20,7 @@ export function EntryForm() {
 
       <div className="space-y-3">
         <label className="block text-sm text-stone-700">
-          <span className="mb-1 block">Date</span>
+          <span className="mb-1 block">Date*</span>
           <input
             name="date"
             type="date"
@@ -30,7 +30,7 @@ export function EntryForm() {
         </label>
 
         <label className="block text-sm text-stone-700">
-          <span className="mb-1 block">Description</span>
+          <span className="mb-1 block">Description*</span>
           <textarea
             name="description"
             rows={4}

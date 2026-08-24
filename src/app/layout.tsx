@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Bodoni_Moda } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const font = Bodoni_Moda({
+  variable: "--font-regular",
   subsets: ["latin"],
 });
 
 const baseTitle = "MemoryLine";
 const baseDesc = "Visualize and share your most important dates";
-const baseUrl = new URL("https://line.soulsbros.ch");
+const baseUrl = new URL("https://dates.soulsbros.ch");
 
 export const metadata: Metadata = {
   title: {
@@ -38,7 +38,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geistSans.variable} h-full`}>
+    <html lang="en" className={`${font.variable} h-full`}>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

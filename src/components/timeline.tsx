@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import { DeleteEntryButton } from "@/components/delete-entry-button";
 import type { MemoryEntry } from "@/lib/db";
 import { formatDate } from "@/lib/utils";
+import { useState } from "react";
 
 export function Timeline({
   entries,
@@ -35,11 +35,8 @@ export function Timeline({
           <h2 className="text-lg font-semibold tracking-wide text-stone-800">
             Timeline
           </h2>
-          <p className="mt-1 text-sm leading-6 text-stone-600">
-            A simple line of the dates that matter.
-          </p>
         </div>
-        <span className="rounded border border-stone-300 bg-white px-2 py-1 text-xs uppercase tracking-[0.25em] text-stone-500">
+        <span className="rounded border border-stone-300 bg-white px-2 py-1 text-stone-500">
           {filteredEntries.length} entries
         </span>
       </div>
@@ -112,7 +109,7 @@ export function Timeline({
                     )}
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="text-xs uppercase tracking-[0.25em] text-stone-500">
+                    <span className="text-xs text-stone-500">
                       {entry.category ?? "Uncategorized"}
                     </span>
                     {entry.ownerId === userId && (
