@@ -162,3 +162,23 @@ export async function shareMemoryEntry(input: {
     .returning();
   return rows[0] ?? null;
 }
+
+export async function deleteMemoryEntry(input: {
+  entryId: number;
+  ownerId: string;
+}) {
+  const db = await getDb();
+  if (!db) return null;
+
+  const rows = await db
+    .delete(memoryEntries)
+    .where(
+      and(
+        eq(memoryEntries.id, input.entryId),
+        eq(memoryEntries.ownerId, input.ownerId),
+      ),
+    )
+    .returning({ id: memoryEntries.id });
+
+  return rows[0] ?? null;
+}

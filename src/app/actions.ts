@@ -2,6 +2,7 @@
 
 import {
   addMemoryEntry as saveMemoryEntry,
+  deleteMemoryEntry as removeMemoryEntry,
   shareMemoryEntry as saveEventShare,
 } from "@/lib/db";
 import { requireUser } from "@/lib/auth";
@@ -51,5 +52,15 @@ export async function shareMemoryEntry(formData: FormData) {
     recipientEmail,
   });
 
+  revalidatePath("/");
+}
+
+export async function deleteMemoryEntry(formData: FormData) {
+  const user = await requireUser();
+  const entryId = Number(formData.get("entryId"));
+
+  if (!Number.isInteger(entryId)) return;
+
+  await removeMemoryEntry({ entryId, ownerId: user.id });
   revalidatePath("/");
 }

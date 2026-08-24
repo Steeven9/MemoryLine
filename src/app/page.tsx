@@ -27,7 +27,7 @@ export default async function Home() {
 
       <section className="grid gap-6 lg:grid-cols-[minmax(0,320px)_1fr]">
         <EntryForm />
-        <Timeline entries={entries} />
+        <Timeline entries={entries} userId={user.id} />
       </section>
     </main>
   );

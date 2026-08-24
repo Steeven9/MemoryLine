@@ -1,10 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { DeleteEntryButton } from "@/components/delete-entry-button";
 import type { MemoryEntry } from "@/lib/db";
 import { formatDate } from "@/lib/utils";
 
-export function Timeline({ entries }: Readonly<{ entries: MemoryEntry[] }>) {
+export function Timeline({
+  entries,
+  userId,
+}: Readonly<{ entries: MemoryEntry[]; userId: string }>) {
   const [activeCategory, setActiveCategory] = useState("all");
   const categories = Array.from(
     new Set(entries.map((entry) => entry.category ?? "Uncategorized")),
@@ -107,9 +111,14 @@ export function Timeline({ entries }: Readonly<{ entries: MemoryEntry[] }>) {
                       </span>
                     )}
                   </div>
-                  <span className="text-xs uppercase tracking-[0.25em] text-stone-500">
-                    {entry.category ?? "Uncategorized"}
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs uppercase tracking-[0.25em] text-stone-500">
+                      {entry.category ?? "Uncategorized"}
+                    </span>
+                    {entry.ownerId === userId && (
+                      <DeleteEntryButton entryId={entry.id} />
+                    )}
+                  </div>
                 </div>
                 <p className="mt-2 text-sm leading-6 text-stone-700">
                   {entry.description}
