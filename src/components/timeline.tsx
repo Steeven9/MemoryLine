@@ -33,7 +33,7 @@ export function Timeline({
 
   if (!entries.length) {
     return (
-      <div className="rounded border border-stone-300 bg-stone-50 p-6 text-sm leading-6 text-stone-600 shadow-[2px_2px_0_0_rgba(0,0,0,0.08)]">
+      <div className="rounded mb-6 border border-stone-300 bg-stone-50 p-6 text-sm leading-6 text-stone-600 shadow-[2px_2px_0_0_rgba(0,0,0,0.08)]">
         No notes yet. Add the first important date to begin the timeline.
       </div>
     );
@@ -132,7 +132,12 @@ export function Timeline({
                 className="relative min-w-[min(86vw,20rem)] snap-start pt-3 sm:min-w-76"
               >
                 <span className="absolute left-5 top-0 h-3 w-3 rounded-full border border-stone-700 bg-stone-100" />
-                <article className="flex min-h-44 flex-col rounded border border-stone-300 bg-white p-3">
+                <article
+                  aria-label={entry.spoiler ? "Spoiler event" : undefined}
+                  className={`group flex min-h-44 flex-col rounded border border-stone-300 bg-white p-3 transition-[filter] duration-200 ${
+                    entry.spoiler ? "blur-sm hover:blur-none" : ""
+                  }`}
+                >
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
                       <p className="text-sm font-semibold text-stone-800">

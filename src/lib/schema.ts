@@ -1,4 +1,5 @@
 import {
+  boolean,
   date,
   integer,
   pgTable,
@@ -10,10 +11,11 @@ import {
 
 export const memoryEntries = pgTable("memory_entries", {
   id: serial("id").primaryKey(),
-  ownerId: text("owner_id"),
+  ownerId: text("owner_id").notNull(),
   date: date("date").notNull(),
   description: text("description").notNull(),
   category: text("category"),
+  spoiler: boolean("spoiler").notNull().default(false),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
 });
 

@@ -67,6 +67,15 @@ export function EntryForm() {
           />
         </label>
 
+        <label className="flex items-center gap-2 text-sm text-stone-700">
+          <input
+            name="spoiler"
+            type="checkbox"
+            className="h-4 w-4 rounded border-stone-300 accent-stone-900"
+          />
+          <span>Mark as spoiler</span>
+        </label>
+
         <button
           type="submit"
           className="w-full rounded border border-stone-800 bg-stone-900 px-3 py-2 text-sm font-medium text-stone-50 transition-colors hover:bg-stone-700"

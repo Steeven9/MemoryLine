@@ -1,11 +1,11 @@
 "use server";
 
+import { requireUser } from "@/lib/auth";
 import {
-  addMemoryEntry as saveMemoryEntry,
   deleteMemoryEntry as removeMemoryEntry,
   shareMemoryEntry as saveEventShare,
+  addMemoryEntry as saveMemoryEntry,
 } from "@/lib/db";
-import { requireUser } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -14,6 +14,7 @@ export async function addMemoryEntry(formData: FormData) {
   const date = String(formData.get("date") ?? "").trim();
   const description = String(formData.get("description") ?? "").trim();
   const category = String(formData.get("category") ?? "").trim();
+  const spoiler = formData.get("spoiler") === "on";
 
   if (!date || !description) {
     return;
@@ -24,6 +25,7 @@ export async function addMemoryEntry(formData: FormData) {
     date,
     description,
     category: category || undefined,
+    spoiler,
   });
 
   const recipientEmail = String(formData.get("recipientEmail") ?? "").trim();

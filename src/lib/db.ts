@@ -9,6 +9,7 @@ export type MemoryEntry = {
   date: string;
   description: string;
   category: string | null;
+  spoiler: boolean;
   createdAt: Date | null;
 };
 
@@ -80,6 +81,7 @@ export async function getMemoryEntries(
     return rows.map((row) => ({
       ...row,
       sharedWith: recipientsByEntry.get(row.id) ?? [],
+      spoiler: row.spoiler ?? false,
       createdAt: row.createdAt ? new Date(row.createdAt) : null,
     }));
   } catch (err) {
@@ -93,6 +95,7 @@ export async function addMemoryEntry(input: {
   date: string;
   description: string;
   category?: string;
+  spoiler?: boolean;
 }) {
   const normalizedCategory = input.category?.trim() || null;
 
@@ -104,6 +107,7 @@ export async function addMemoryEntry(input: {
       date: input.date,
       description: input.description.trim(),
       category: normalizedCategory,
+      spoiler: input.spoiler ?? false,
       createdAt: new Date(),
     };
 
@@ -122,10 +126,12 @@ export async function addMemoryEntry(input: {
       date: input.date,
       description: input.description.trim(),
       category: normalizedCategory,
+      spoiler: input.spoiler ?? false,
     })
     .returning();
 
-  return rows[0] ?? null;
+  const entry = rows[0];
+  return entry ? { ...entry, spoiler: entry.spoiler ?? false } : null;
 }
 
 export async function shareMemoryEntry(input: {
