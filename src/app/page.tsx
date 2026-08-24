@@ -9,7 +9,7 @@ export default async function Home() {
   const entries = await getMemoryEntries(user.id, user.email ?? "");
 
   return (
-    <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8">
+    <main className="mx-auto flex w-full flex-1 flex-col gap-6 px-4 py-8 sm:px-6 lg:px-8">
       <header className="rounded border border-stone-300 bg-stone-50 p-6 shadow-[2px_2px_0_0_rgba(0,0,0,0.08)]">
         <h1 className="mt-2 text-3xl font-semibold tracking-tight text-stone-900 sm:text-4xl">
           MemoryLine
@@ -23,9 +23,9 @@ export default async function Home() {
         </div>
       </header>
 
-      <section className="grid gap-6 lg:grid-cols-[minmax(0,320px)_1fr]">
-        <EntryForm />
+      <section>
         <Timeline entries={entries} userId={user.id} />
+        <EntryForm />
       </section>
     </main>
   );

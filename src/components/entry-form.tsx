@@ -6,7 +6,7 @@ export function EntryForm() {
   return (
     <form
       action={addMemoryEntry}
-      className="rounded border border-stone-300 bg-stone-50 p-4 shadow-[2px_2px_0_0_rgba(0,0,0,0.08)]"
+      className="rounded border border-stone-300 bg-stone-50 max-w-3xl m-auto p-4 shadow-[2px_2px_0_0_rgba(0,0,0,0.08)]"
     >
       <div className="mb-4">
         <h2 className="text-lg font-semibold tracking-wide text-stone-800">
@@ -15,6 +15,8 @@ export function EntryForm() {
         <p className="mt-1 text-sm leading-6 text-stone-600">
           Record the day, describe why it matters, and add a category if you
           want.
+          <br />
+          Notes shared with someone will also appear in their timeline.
         </p>
       </div>
 
