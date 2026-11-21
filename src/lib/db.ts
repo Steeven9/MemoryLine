@@ -15,7 +15,7 @@ export type MemoryEntry = {
 
 let cachedDb: ReturnType<typeof drizzle> | null = null;
 
-async function getDb() {
+function getDb() {
   if (!process.env.DATABASE_URL) {
     return null;
   }

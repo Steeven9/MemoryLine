@@ -11,9 +11,11 @@ import { redirect } from "next/navigation";
 
 export async function addMemoryEntry(formData: FormData) {
   const user = await requireUser();
-  const date = String(formData.get("date") ?? "").trim();
-  const description = String(formData.get("description") ?? "").trim();
-  const category = String(formData.get("category") ?? "").trim();
+  const date = String(formData.get("date")?.toString() ?? "").trim();
+  const description = String(
+    formData.get("description")?.toString() ?? "",
+  ).trim();
+  const category = String(formData.get("category")?.toString() ?? "").trim();
   const spoiler = formData.get("spoiler") === "on";
 
   if (!date || !description) {
@@ -28,7 +30,9 @@ export async function addMemoryEntry(formData: FormData) {
     spoiler,
   });
 
-  const recipientEmail = String(formData.get("recipientEmail") ?? "").trim();
+  const recipientEmail = String(
+    formData.get("recipientEmail")?.toString() ?? "",
+  ).trim();
   if (entry && recipientEmail && user.email) {
     await saveEventShare({
       entryId: entry.id,
@@ -44,7 +48,9 @@ export async function addMemoryEntry(formData: FormData) {
 export async function shareMemoryEntry(formData: FormData) {
   const user = await requireUser();
   const entryId = Number(formData.get("entryId"));
-  const recipientEmail = String(formData.get("recipientEmail") ?? "").trim();
+  const recipientEmail = String(
+    formData.get("recipientEmail")?.toString() ?? "",
+  ).trim();
 
   if (!Number.isInteger(entryId) || !recipientEmail || !user.email) return;
 

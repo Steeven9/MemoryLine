@@ -5,11 +5,8 @@ const nextConfig: NextConfig = {
   output: "standalone",
   // hides the N icon in dev mode
   devIndicators: false,
-  images: {
-    remotePatterns: [new URL("https://s3.soulsbros.ch/tiltup/**")],
-  },
   // https://nextjs.org/docs/app/building-your-application/configuring/progressive-web-apps#8-securing-your-application
-  async headers() {
+  headers() {
     return [
       {
         source: "/(.*)",
